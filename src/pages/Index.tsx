@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import ChatInterface from '@/components/ChatInterface';
+import ChatInterface from '@/components/chat/ChatInterface';
 import { Snowflake } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
