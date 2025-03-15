@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { Send, Paperclip, Image } from 'lucide-react';
+import { Send, Paperclip } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ChatInputProps {
@@ -39,32 +39,36 @@ const ChatInput = ({ onSendMessage, onSendFile }: ChatInputProps) => {
   };
   
   return (
-    <div className="border-t bg-white p-4 rounded-b-xl animate-slide-up">
-      <div className="flex items-end gap-2">
-        <div className="relative flex-grow">
+    <div className="border-t bg-white p-4">
+      <div className="max-w-3xl mx-auto">
+        <div className="relative border border-gray-300 rounded-lg shadow-sm">
           <textarea
-            className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 
-                    focus:ring-primary focus:border-transparent resize-none min-h-[52px] max-h-32 pr-10"
-            placeholder="Type your message..."
+            className="w-full p-3 pr-24 rounded-lg focus:outline-none resize-none min-h-[52px] max-h-32"
+            placeholder="Message MidwinterAI..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
             rows={1}
           />
-          <div className="absolute bottom-2 right-2 flex gap-1">
+          <div className="absolute bottom-2 right-2 flex gap-2">
             <button 
               onClick={handleFileSelect}
-              className="p-1.5 text-gray-500 rounded-full hover:bg-gray-100 transition-colors"
+              className="p-1.5 text-gray-500 rounded-md hover:bg-gray-100 transition-colors"
               title="Attach file"
             >
               <Paperclip size={18} />
             </button>
-            <button 
-              onClick={handleFileSelect}
-              className="p-1.5 text-gray-500 rounded-full hover:bg-gray-100 transition-colors"
-              title="Attach image"
+            <button
+              className={cn(
+                "p-1.5 rounded-md focus:outline-none transition-all duration-300",
+                message.trim() 
+                  ? "bg-green-600 text-white hover:bg-green-700" 
+                  : "bg-gray-200 text-gray-400"
+              )}
+              onClick={handleSendMessage}
+              disabled={!message.trim()}
             >
-              <Image size={18} />
+              <Send size={18} />
             </button>
           </div>
           <input 
@@ -74,19 +78,9 @@ const ChatInput = ({ onSendMessage, onSendFile }: ChatInputProps) => {
             className="hidden" 
           />
         </div>
-        
-        <button
-          className={cn(
-            "p-3 rounded-full focus:outline-none transition-all duration-300 flex-shrink-0 shadow-sm",
-            message.trim() 
-              ? "bg-primary text-white hover:bg-primary/90" 
-              : "bg-gray-100 text-gray-400"
-          )}
-          onClick={handleSendMessage}
-          disabled={!message.trim()}
-        >
-          <Send size={20} className={message.trim() ? "transform rotate-45" : ""} />
-        </button>
+        <div className="text-xs text-center text-gray-500 mt-2">
+          MidwinterAI may produce inaccurate information about people, places, or facts.
+        </div>
       </div>
     </div>
   );

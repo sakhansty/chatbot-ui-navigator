@@ -19,26 +19,24 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
   return (
     <div 
       className={cn(
-        "message-bubble animate-fade-in flex mb-4",
-        isUser ? "justify-end" : "justify-start"
+        "message-bubble px-4 py-6 animate-fade-in",
+        isUser ? "bg-white" : "bg-gray-50"
       )}
     >
-      <div 
-        className={cn(
-          "px-4 py-3 rounded-2xl max-w-[80%] shadow-sm",
-          isUser 
-            ? "bg-primary text-white rounded-tr-none" 
-            : "bg-chatbot-bot text-gray-800 rounded-tl-none border border-gray-200"
-        )}
-      >
-        <p className="text-sm">{message.text}</p>
+      <div className="max-w-3xl mx-auto flex items-start gap-4">
         <div 
           className={cn(
-            "text-[10px] mt-1 opacity-70",
-            isUser ? "text-right" : "text-left"
+            "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
+            isUser ? "bg-blue-500" : "bg-green-500"
           )}
         >
-          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          <span className="text-white font-medium text-sm">
+            {isUser ? 'U' : 'M'}
+          </span>
+        </div>
+        
+        <div className="flex-1">
+          <p className="text-sm text-gray-800">{message.text}</p>
         </div>
       </div>
     </div>

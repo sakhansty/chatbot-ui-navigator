@@ -5,11 +5,11 @@ import MessageContainer from './MessageContainer';
 import ChatInput from '../ChatInput';
 import { useChatMessages } from './useChatMessages';
 
-const WELCOME_MESSAGE = "Halo! Saya asisten virtual MidwinterAI. Bagaimana saya bisa membantu Anda hari ini?";
+const WELCOME_MESSAGE = "Hello! I'm MidwinterAI, a generative AI assistant. How can I help you today?";
 const QUICK_REPLIES = [
-  "Apa yang bisa MidwinterAI lakukan?",
-  "Bagaimana cara menggunakan chatbot ini?",
-  "Saya memerlukan bantuan",
+  "Tell me about MidwinterAI",
+  "What can you do?",
+  "Help me with a task",
 ];
 
 interface ChatInterfaceProps {

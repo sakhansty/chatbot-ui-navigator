@@ -7,12 +7,12 @@ interface ChatHeaderProps {
 
 const ChatHeader = ({ companyLogo }: ChatHeaderProps) => {
   return (
-    <div className="bg-white p-4 border-b flex items-center justify-between">
+    <div className="bg-gray-50 p-4 border-b flex items-center justify-between">
       <div className="flex items-center space-x-3">
         {companyLogo ? (
           <img 
             src={companyLogo} 
-            alt="Company Logo" 
+            alt="MidwinterAI Logo" 
             className="h-8 w-8 object-contain"
           />
         ) : (
@@ -21,8 +21,8 @@ const ChatHeader = ({ companyLogo }: ChatHeaderProps) => {
           </div>
         )}
         <div>
-          <h3 className="font-medium text-gray-900">Asisten Virtual</h3>
-          <p className="text-xs text-gray-500">Online</p>
+          <h3 className="font-medium text-gray-800">MidwinterAI Chat</h3>
+          <p className="text-xs text-gray-500">AI Assistant</p>
         </div>
       </div>
     </div>
