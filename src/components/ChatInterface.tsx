@@ -6,23 +6,25 @@ import TypingIndicator from './TypingIndicator';
 import QuickReply from './QuickReply';
 import { cn } from '@/lib/utils';
 
-const WELCOME_MESSAGE = "Halo! Saya asisten virtual Anda. Bagaimana saya bisa membantu Anda hari ini?";
+const WELCOME_MESSAGE = "Halo! Saya asisten virtual MidwinterAI. Bagaimana saya bisa membantu Anda hari ini?";
 const QUICK_REPLIES = [
-  "Apa itu n8n?",
+  "Apa yang bisa MidwinterAI lakukan?",
   "Bagaimana cara menggunakan chatbot ini?",
-  "Saya memerlukan bantuan teknis",
+  "Saya memerlukan bantuan",
 ];
 
 interface ChatInterfaceProps {
   companyLogo?: string;
   welcomeMessage?: string;
   quickReplies?: string[];
+  chatId?: string;
 }
 
 const ChatInterface = ({ 
   companyLogo,
   welcomeMessage = WELCOME_MESSAGE,
-  quickReplies = QUICK_REPLIES
+  quickReplies = QUICK_REPLIES,
+  chatId = 'default'
 }: ChatInterfaceProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -30,8 +32,11 @@ const ChatInterface = ({
   const [isScrolling, setIsScrolling] = useState(false);
   const messageContainerRef = useRef<HTMLDivElement>(null);
   
-  // Initialize with welcome message
+  // Reset pesan saat chatId berubah
   useEffect(() => {
+    setMessages([]);
+    
+    // Inisialisasi dengan pesan selamat datang
     const initialMessage: Message = {
       id: '0',
       text: welcomeMessage,
@@ -40,16 +45,16 @@ const ChatInterface = ({
     };
     setMessages([initialMessage]);
     
-    // Play notification sound for welcome message
+    // Putar suara notifikasi untuk pesan selamat datang
     playNotificationSound();
-  }, [welcomeMessage]);
+  }, [welcomeMessage, chatId]);
   
-  // Scroll to bottom when messages change
+  // Scroll ke bawah saat pesan berubah
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
   
-  // Handle scroll detection
+  // Menangani deteksi scroll
   useEffect(() => {
     const container = messageContainerRef.current;
     if (!container) return;
@@ -71,7 +76,7 @@ const ChatInterface = ({
   };
   
   const playNotificationSound = () => {
-    // Implement sound notification if needed
+    // Implementasi notifikasi suara jika diperlukan
     // const audio = new Audio('/notification.mp3');
     // audio.play().catch(e => console.log('Audio play failed:', e));
   };
@@ -86,10 +91,10 @@ const ChatInterface = ({
     
     setMessages(prevMessages => [...prevMessages, newMessage]);
     
-    // Simulate typing indicator
+    // Simulasi indikator pengetikan
     setIsTyping(true);
     
-    // Simulate bot response (would be replaced with actual n8n API call)
+    // Simulasi respons bot (akan diganti dengan API call sebenarnya)
     setTimeout(() => {
       setIsTyping(false);
       
@@ -106,10 +111,10 @@ const ChatInterface = ({
   };
   
   const handleSendFile = (file: File) => {
-    // This would be integrated with your n8n workflow
-    console.log('File received:', file);
+    // Ini akan diintegrasikan dengan workflow Anda
+    console.log('File diterima:', file);
     
-    // Send a message acknowledging the file
+    // Kirim pesan yang mengakui file
     handleSendMessage(`Saya mengirim file: ${file.name}`);
   };
   
@@ -117,20 +122,20 @@ const ChatInterface = ({
     handleSendMessage(text);
   };
   
-  // Simple bot response logic (would be replaced with n8n integration)
+  // Logika respons bot sederhana (akan diganti dengan integrasi API)
   const getBotResponse = (text: string): string => {
     const lowerText = text.toLowerCase();
     
-    if (lowerText.includes('n8n')) {
-      return 'n8n adalah platform otomatisasi workflow tanpa kode yang memungkinkan Anda menghubungkan berbagai aplikasi dan layanan untuk mengotomatiskan proses bisnis Anda.';
+    if (lowerText.includes('midwinter') || lowerText.includes('apa yang bisa')) {
+      return 'MidwinterAI adalah asisten virtual yang dirancang untuk membantu Anda mendapatkan informasi, menjawab pertanyaan, dan melaksanakan tugas-tugas sederhana dengan interface chat yang mudah digunakan.';
     }
     
     if (lowerText.includes('chatbot') || lowerText.includes('cara menggunakan')) {
-      return 'Anda dapat mengetik pertanyaan atau memilih opsi quick reply. Chatbot ini akan memberikan jawaban atau meneruskan permintaan Anda ke sistem yang tepat.';
+      return 'Anda dapat mengetik pertanyaan atau memilih opsi quick reply. MidwinterAI akan memberikan jawaban atau meneruskan permintaan Anda ke sistem yang tepat.';
     }
     
-    if (lowerText.includes('bantuan') || lowerText.includes('teknis')) {
-      return 'Untuk bantuan teknis, silakan berikan detail masalah Anda dan tim support kami akan segera membantu Anda.';
+    if (lowerText.includes('bantuan') || lowerText.includes('help')) {
+      return 'Tentu, saya di sini untuk membantu. Silakan jelaskan apa yang Anda butuhkan dan saya akan berusaha memberikan solusi terbaik.';
     }
     
     return 'Terima kasih atas pesan Anda. Saya akan memproses permintaan Anda dan segera kembali kepada Anda.';
@@ -149,7 +154,7 @@ const ChatInterface = ({
             />
           ) : (
             <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center text-white font-medium">
-              B
+              M
             </div>
           )}
           <div>
