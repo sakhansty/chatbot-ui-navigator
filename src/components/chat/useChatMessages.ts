@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Message } from '../MessageBubble';
+import { n8nService } from '../../services/n8nService';
 
 interface UseChatMessagesProps {
   initialWelcomeMessage: string;
@@ -34,7 +35,7 @@ export const useChatMessages = ({ initialWelcomeMessage, chatId }: UseChatMessag
     // audio.play().catch(e => console.log('Audio play failed:', e));
   };
   
-  const handleSendMessage = (text: string) => {
+  const handleSendMessage = async (text: string) => {
     const newMessage: Message = {
       id: Date.now().toString(),
       text,
@@ -47,23 +48,38 @@ export const useChatMessages = ({ initialWelcomeMessage, chatId }: UseChatMessag
     // Start typing indicator
     setIsTyping(true);
     
-    // Simulate bot response (would be replaced with actual API call)
-    setTimeout(() => {
+    try {
+      // Get response from n8n workflow
+      const n8nResponse = await n8nService.sendMessage(text, chatId);
+      
       setIsTyping(false);
       
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: getBotResponse(text),
+        text: n8nResponse.message || getBotResponse(text), // Fallback to local responses if n8n returns empty
         sender: 'bot',
         timestamp: new Date()
       };
       
       setMessages(prevMessages => [...prevMessages, botResponse]);
       playNotificationSound();
-    }, 1500);
+    } catch (error) {
+      console.error("Error processing message:", error);
+      setIsTyping(false);
+      
+      // Add error message
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "Sorry, I encountered an error processing your request. Please try again.",
+        sender: 'bot',
+        timestamp: new Date()
+      };
+      
+      setMessages(prevMessages => [...prevMessages, errorMessage]);
+    }
   };
   
-  // Simulate bot response logic (would be replaced by API call)
+  // Fallback bot response logic (used when n8n connection fails)
   const getBotResponse = (text: string): string => {
     const lowerText = text.toLowerCase();
     
